@@ -7,6 +7,8 @@ using Infrastructure;
 using Infrastructure.Persistence.EntityFramework;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using Serilog;
 
 try
@@ -33,21 +35,37 @@ try
 
     builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 
-    builder.Services.AddAuthentication(options =>
+
+
+    builder.Services.AddOpenApiDocument(c =>
     {
-        // Configure your authentication options
-    }).AddJwtBearer(options =>
-    {
-        // Configure JWT bearer authentication
+        c.Title = "Gideons API";
+
+        c.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+        {
+            Type = OpenApiSecuritySchemeType.ApiKey,
+            Name = "Authorization",
+            In = OpenApiSecurityApiKeyLocation.Header,
+            Description = "Type into the textbox: Bearer {your JWT token}."
+        });
+
+        c.OperationProcessors.Add(
+            new AspNetCoreOperationSecurityScopeProcessor("JWT"));
     });
 
     var app = builder.Build();
+    app.UseAuthentication();
+    // app.UseIdentityServer();
 
+    app.UseAuthorization();
     // APM agent setup
     app.UseElasticApm(builder.Configuration);
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseOpenApi();
+    app.UseSwaggerUi3(settings =>
+    {
+        settings.Path = "/api";
+    });
 
     app.UseHttpsRedirection();
     app.UseAuthorization();
