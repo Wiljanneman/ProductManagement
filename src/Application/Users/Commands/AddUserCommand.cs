@@ -11,24 +11,19 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Users.Commands;
-public class AddUserCommand
+public class AddUserCommand: IRequest
 {
- 
-    public class CreateUserCommand : IRequest
-    {
-        public UserVM User { get; set; }
-    }
+    public UserVM User { get; set; }
 
-    public class Handler : IRequestHandler<CreateUserCommand>
+    public class Handler : IRequestHandler<AddUserCommand>
     {
         private readonly UserManager<ApplicationUser> _userMgr;
 
-        public Handler(IApplicationDbContext context, IMediator mediator,  IMapper mapper, UserManager<ApplicationUser> userMgr,
-            ICurrentUserService currentUserService)
+        public Handler(IApplicationDbContext context, UserManager<ApplicationUser> userMgr)
         {
             _userMgr = userMgr;
         }
-        public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
             var user = new ApplicationUser
             {

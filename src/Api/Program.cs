@@ -1,9 +1,12 @@
+using Api.Services;
 using Application;
+using Application.Commons.Interfaces;
 using Domain.Entities;
 using Elastic.Apm.AspNetCore;
 using Infrastructure;
 using Infrastructure.Persistence.EntityFramework;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 try
@@ -13,6 +16,7 @@ try
     // Add logging
     builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
         .ReadFrom.Configuration(hostingContext.Configuration));
+
 
     // Add services to the container.
     builder.Services.AddApplication();
@@ -26,6 +30,8 @@ try
     builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+    builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 
     builder.Services.AddAuthentication(options =>
     {

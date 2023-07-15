@@ -1,6 +1,6 @@
-﻿using Domain.Models;
+﻿using Application.Commons.Interfaces;
+using Domain.Models;
 using Infrastructure.Persistence.EntityFramework;
-using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,13 +13,10 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // To use sql server
-        //services.AddDbContext<ApplicationDbContext>(options =>
-        //    options.UseSqlServer(
-        //        configuration.GetConnectionString("DefaultConnection"),
-        //        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-        services.AddScoped<IDeviceRepository, DeviceRepository>();
+        services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+
+
 
         return services;
     }
