@@ -10,6 +10,7 @@ using Application.Users.Common;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -20,16 +21,26 @@ public class AuthenticateUserQuery: IRequest<TokenResponseVM>
     public class AuthenticateUserQueryHandler : IRequestHandler<AuthenticateUserQuery, TokenResponseVM>
     {
         private readonly UserManager<ApplicationUser> _userMgr;
-        private IPasswordHasher<ApplicationUser> _hasher;
+        private readonly IPasswordHasher<ApplicationUser> _hasher;
+        private readonly IConfiguration _configuration;
 
-        public AuthenticateUserQueryHandler(IApplicationDbContext context, UserManager<ApplicationUser> userMgr, IPasswordHasher<ApplicationUser> hasher)
+        public AuthenticateUserQueryHandler(IApplicationDbContext context, UserManager<ApplicationUser> userMgr, IPasswordHasher<ApplicationUser> hasher, IConfiguration configuration)
         {
             _userMgr = userMgr;
             _hasher = hasher;
+            _configuration = configuration;
         }
         public async Task<TokenResponseVM> Handle(AuthenticateUserQuery request, CancellationToken cancellationToken)
         {
             ApplicationUser user = await _userMgr.FindByEmailAsync(request.Credentials.Email);
+            if (user == null)
+            {
+                return new TokenResponseVM
+                {
+                    Status = 500,
+                    Message = "No User Found with current credentials"
+                };
+            };
             if (_hasher.VerifyHashedPassword(user, user.PasswordHash, request.Credentials.Password) == PasswordVerificationResult.Success)
             {
                 var roles = await _userMgr.GetClaimsAsync(user);
@@ -46,12 +57,12 @@ public class AuthenticateUserQuery: IRequest<TokenResponseVM>
                 claims.AddRange(roles.Select(role => new Claim(System.Security.Claims.ClaimTypes.Role, role.Value)));
 
                 // would be stored in azure
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("kAFAuCHC0ymUilj8W24zrV8wTgMN7GHziF66laxNWaU="));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:key"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
-                    issuer: "test_issuer",
-                    audience: "test_audience",
+                    issuer: _configuration["Tokens:Issuer"],
+                    audience: _configuration["Tokens:Audience"],
                     claims: claims,
                     expires: DateTime.Now.AddDays(1),
                     signingCredentials: creds

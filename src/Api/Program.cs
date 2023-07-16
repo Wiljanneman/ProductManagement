@@ -24,7 +24,7 @@ try
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddControllers();
-
+    builder.Services.AddCors();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
@@ -39,7 +39,7 @@ try
 
     builder.Services.AddOpenApiDocument(c =>
     {
-        c.Title = "Gideons API";
+        c.Title = "Product Management API";
 
         c.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
         {
@@ -66,7 +66,12 @@ try
     {
         settings.Path = "/api";
     });
-
+    app.UseCors(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
     app.UseHttpsRedirection();
     app.UseAuthorization();
     app.MapControllers();

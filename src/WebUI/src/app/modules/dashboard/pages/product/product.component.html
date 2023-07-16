@@ -1,0 +1,78 @@
+<div class="mx-auto px-4 py-4 sm:px-8 lg:container">
+  <!-- Header -->
+
+  <div class="mb-4 flex justify-between">
+    <div class="inline-block">
+      <h3 class="font-semibold text-gray-900 dark:text-white">Products</h3>
+    </div>
+  </div>
+
+  <!-- end Header -->
+
+  <div class="w-full">
+    <!-- Products Table -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id </th>
+        <td mat-cell *matCellDef="let product"> {{product.id}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> name </th>
+        <td mat-cell *matCellDef="let product"> {{product.name}} </td>
+      </ng-container>
+
+      <!-- Description Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> description </th>
+        <td mat-cell *matCellDef="let product"> {{product.description}} </td>
+      </ng-container>
+
+      <!-- Inc. VAT -->
+      <ng-container matColumnDef="incVatAmount">
+        <th mat-header-cell *matHeaderCellDef> Inc. VAT </th>
+        <td mat-cell *matCellDef="let product"> {{product.includingVATAmount}} </td>
+      </ng-container>
+
+      <!-- Exc. VAT -->
+      <ng-container matColumnDef="excVatAmount">
+        <th mat-header-cell *matHeaderCellDef> Exc. VAT </th>
+        <td mat-cell *matCellDef="let product"> {{product.excludingVATAmount}} </td>
+      </ng-container>
+
+
+      <!-- Quantity -->
+      <ng-container matColumnDef="qty">
+        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+        <td mat-cell *matCellDef="let product"> {{product.quantity}} </td>
+      </ng-container>
+
+      <!-- On Sale -->
+      <ng-container matColumnDef="isSale">
+        <th mat-header-cell *matHeaderCellDef> On Sale </th>
+        <td mat-cell *matCellDef="let product">
+          <mat-checkbox [checked]="product.isOnSale"></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let product" class="flex items-start">
+          <div (click)="goToProductDetail(product)" style="cursor: pointer;" class="flex flex-col items-center">
+            <mat-icon class="">edit</mat-icon>
+            <small class="text-center">View / Edit</small>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+  </div>
+</div>
