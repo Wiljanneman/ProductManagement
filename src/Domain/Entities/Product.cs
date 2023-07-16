@@ -11,7 +11,7 @@ public class Product
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal RegularPrice { get; set; }
-    public decimal SalePrice { get; set; }
+    public decimal? SalePrice { get; set; }
     public bool IsOnSale { get; set; }
     public int Quantity { get; set; }
 }

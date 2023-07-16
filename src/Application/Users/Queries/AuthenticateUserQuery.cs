@@ -68,6 +68,7 @@ public class AuthenticateUserQuery: IRequest<TokenResponseVM>
                     signingCredentials: creds
                     );
 
+
                 return new TokenResponseVM
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),

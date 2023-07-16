@@ -14,17 +14,17 @@ public class UpdateProductCommand : IRequest
 {
     public ProductVM Product { get; set; }
 
-    public class Handler : IRequestHandler<CreateProductCommand>
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
     {
         private IApplicationDbContext _context;
         private IMapper _mapper;
 
-        public Handler(IApplicationDbContext context, IMapper mapper)
+        public UpdateProductCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-        public async Task<Unit> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             Product product = _mapper.Map<Domain.Entities.Product>(request.Product);
             _context.Products.Update(product);

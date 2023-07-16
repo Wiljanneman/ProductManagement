@@ -16,18 +16,18 @@ public class ProductVM: IMapFrom<Product>
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal RegularPrice { get; set; }
-    public decimal SalePrice { get; set; }
+    public decimal? SalePrice { get; set; }
     public bool IsOnSale { get; set; }
     public int Quantity { get; set; }
     // Including VAT
     public decimal VATAmount { get { return VATHelper.VATPercentage; } }
     public decimal IncludingVATAmount
     {
-        get { return IsOnSale ?  (VATHelper.CalculateVAT(SalePrice)) : (VATHelper.CalculateVAT(RegularPrice)); }
+        get { return IsOnSale ?  (VATHelper.CalculateVAT(SalePrice ?? 0)) : (VATHelper.CalculateVAT(RegularPrice)); }
     }
     public decimal ExcludingVATAmount
     {
-        get { return IsOnSale ? SalePrice : RegularPrice; }
+        get { return IsOnSale ? (SalePrice ?? 0) : RegularPrice; }
     }
     public void Mapping(Profile profile)
     {

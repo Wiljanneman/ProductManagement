@@ -9,7 +9,9 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 export class ProductService {
 
   constructor(private http: HttpClient) { }
-
+  getVat(): Observable<number> {
+    return this.http.get<number>(`Product/Vat`);
+  }
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`Product`);
   }
@@ -22,9 +24,8 @@ export class ProductService {
   updateProduct(product: Product) : Observable<{}> {
     return this.http.put<{}>(`Product`, product);
   }
-  deleteProduct(product: Product) : Observable<{}> {
-    const req = new HttpRequest('DELETE', 'Product', product);
-    return this.http.request<{}>(req);
+  deleteProduct(id: number) : Observable<{}> {
+    return this.http.delete<Product>(`Product/${id}`);
   }
 
 

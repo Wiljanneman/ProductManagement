@@ -29,6 +29,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     }
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<LogEntry> LogEntries { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

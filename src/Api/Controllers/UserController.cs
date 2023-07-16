@@ -10,6 +10,11 @@ namespace Api.Controllers;
 public class UserController : BaseController
 {
 
+    private readonly ILogger<UserController> _logger;
+    public UserController(ILogger<UserController> logger)
+    {
+        _logger = logger;
+    }
 
     [HttpPost]
     public async Task<ActionResult<int>> Create(UserVM user)
@@ -21,13 +26,14 @@ public class UserController : BaseController
         }
         catch(Exception ex)
         {
-            return BadRequest(ex);
+            _logger.LogError(ex, "Error on users");
+            return StatusCode(ex.HResult, new { error = ex.Message });
         }
 
     }
 
     [HttpPost("authenticate")]
-    public async Task<ActionResult<TokenResponseVM>> Endpoint1([FromBody] UserVM credentials)
+    public async Task<ActionResult<TokenResponseVM>> AuthenticateUser([FromBody] UserVM credentials)
     {
         try
         {
@@ -36,7 +42,8 @@ public class UserController : BaseController
         }
         catch (Exception ex)
         {
-            return BadRequest(ex);
+            _logger.LogError(ex, "Error on users");
+            return StatusCode(ex.HResult, new { error = ex.Message });
         }
     }
 }

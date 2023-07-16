@@ -1,4 +1,5 @@
-﻿using Application.Products.Commands;
+﻿using System.Net;
+using Application.Products.Commands;
 using Application.Products.Common;
 using Application.Products.Queries;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,24 +12,63 @@ namespace Api.Controllers;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class ProductController : BaseController
 {
+    private readonly ILogger<ProductController> _logger;
+    public ProductController(ILogger<ProductController> logger)
+    {
+        _logger = logger;
+    }
     [HttpGet]
     public async Task<IActionResult> GetProducts()
     {
-        var query = new GetProductsQuery();
-        var result = await Mediator.Send(query);
-        return Ok(result);
+        try
+        {
+            var query = new GetProductsQuery();
+            var result = await Mediator.Send(query);
+            
+            return Ok(result);
+
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Error on products");
+            return StatusCode(ex.HResult, new { error = ex.Message });
+        }
+
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProductById(int id)
     {
-        var query = new GetProductByIdQuery { Id = id };
-        var result = await Mediator.Send(query);
-        if (result == null)
+        try
         {
-            return NotFound();
+            var query = new GetProductByIdQuery { Id = id };
+            var result = await Mediator.Send(query);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
-        return Ok(result);
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Error on products");
+            return StatusCode(ex.HResult, new { error = ex.Message });
+        }
+
+    }
+
+    [HttpGet("VAT")]
+    public IActionResult GetVAT()
+    {
+        try
+        {
+            return Ok(Application.Commons.Helpers.VATHelper.VATPercentage);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error on products");
+            return StatusCode(ex.HResult, new { error = ex.Message });
+        }
     }
 
     [HttpPost]
@@ -41,22 +81,41 @@ public class ProductController : BaseController
         }
         catch(Exception ex)
         {
-            return BadRequest(ex.Message);
+            _logger.LogError(ex, "Error on products");
+            return StatusCode(ex.HResult, new { error = ex.Message });
         }
 
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<IActionResult> UpdateProduct([FromBody] ProductVM product)
     {
-        var result = await Mediator.Send(new UpdateProductCommand { Product = product });
-        return Ok(result);
+        try
+        {
+            var result = await Mediator.Send(new UpdateProductCommand { Product = product });
+            return Ok(result);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Error on products");
+            return StatusCode(ex.HResult, new { error = ex.Message });
+        }
+
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProduct([FromBody] ProductVM product)
+    public async Task<IActionResult> DeleteProduct(int id)
     {
-        var result = await Mediator.Send(new DeleteProductCommand { Product = product });
-        return Ok(result);
+        try
+        {
+            var result = await Mediator.Send(new DeleteProductCommand { Id = id });
+            return Ok(result);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Error on products");
+            return StatusCode(ex.HResult, new { error = ex.Message });
+        }
+
     }
 }

@@ -11,7 +11,7 @@
       clickOutside
       (clickOutside)="isMenuOpen = false"
       class="h-9 w-9 rounded-md"
-      src="https://avatars.githubusercontent.com/u/12519008?v=4"
+      src="https://media.licdn.com/dms/image/D4D03AQFMGm_D2CbvCg/profile-displayphoto-shrink_800_800/0/1685275265070?e=2147483647&v=beta&t=bjCKVTruZcthwWxZtL1_t142qZXK3bqyWKy-2_avmP8"
       alt="" />
   </button>
   <!-- Dropdown -->
@@ -24,7 +24,7 @@
     class="absolute right-0 mt-2 w-60 origin-top-right transform rounded-md bg-white py-4 shadow-custom ring-1 ring-transparent ring-opacity-5 transition focus:outline-none dark:bg-night-600">
     <div class="flext-row flex items-center px-4 pb-4">
       <div class="w-10 shrink-0">
-        <img class="rounded-md" src="https://avatars.githubusercontent.com/u/12519008?v=4" alt="" />
+        <img class="rounded-md" src="https://media.licdn.com/dms/image/D4D03AQFMGm_D2CbvCg/profile-displayphoto-shrink_800_800/0/1685275265070?e=2147483647&v=beta&t=bjCKVTruZcthwWxZtL1_t142qZXK3bqyWKy-2_avmP8" alt="" />
       </div>
       <div class="overflow-hidden px-2 text-sm font-semibold text-gray-700 dark:text-night-50">
         Luciano Oliveira
@@ -48,7 +48,7 @@
         Settings
       </li>
       <li
-        routerLink="/auth"
+      (click)="signOut()"
         class="block cursor-pointer rounded-md px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-primary-500 dark:text-night-200 dark:hover:bg-night-500 dark:hover:text-primary-500">
         Sign out
       </li>

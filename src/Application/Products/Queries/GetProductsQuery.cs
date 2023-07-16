@@ -25,6 +25,7 @@ public class GetProductsQuery : IRequest<List<ProductVM>>
         public async Task<List<ProductVM>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
             List<ProductVM> products = _mapper.Map<List<ProductVM>>(await _context.Products.ToListAsync());
+
             return products;
         }
     }

@@ -8,25 +8,30 @@ using Application.Products.Common;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Products.Commands;
 public class DeleteProductCommand : IRequest
 {
-    public ProductVM Product { get; set; }
+    public int Id { get; set; }
 
-    public class Handler : IRequestHandler<CreateProductCommand>
+    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
     {
         private IApplicationDbContext _context;
         private IMapper _mapper;
 
-        public Handler(IApplicationDbContext context, IMapper mapper)
+        public DeleteProductCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-        public async Task<Unit> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            Product product = _mapper.Map<Domain.Entities.Product>(request.Product);
+            Product product = _context.Products.FirstOrDefault(a => a.Id == request.Id);
+            if (product == null)
+            {
+                return Unit.Value;
+            }
             _context.Products.Remove(product);
             await _context.SaveChangesAsync(cancellationToken);
             return Unit.Value;

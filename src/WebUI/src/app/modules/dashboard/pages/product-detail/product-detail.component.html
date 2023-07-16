@@ -1,1 +1,56 @@
-<p>product-detail works!</p>
+<div class="mx-auto px-4 py-4 sm:px-8 lg:container">
+    <div class="flex-col rounded-lg bg-white px-8 py-8 dark:bg-night-700 sm:flex-row">
+
+        <div class="mb-4 flex justify-between">
+            <div class="inline-block">
+              <h3 class="font-semibold text-gray-900 dark:text-white">Product Form</h3>
+            </div>
+        </div>
+
+        <form [formGroup]="productForm">
+            <div class="flex flex-row space-x-5">
+                <mat-form-field class="w-1/4">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" formControlName="name">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Quantity <small>(In Stock)</small></mat-label>
+                    <input matInput min="0" placeholder="Quantity" formControlName="quantity" type="number">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Price <small>(Per Unit)</small> </mat-label>
+                    <input matInput min="0" placeholder="Regular Price" formControlName="regularPrice" type="number">
+                </mat-form-field>
+            </div>
+            <div class="flex flex-row space-x-5 items-center">
+                <mat-checkbox formControlName="isOnSale">On Sale</mat-checkbox>
+            </div>
+            <div class="flex flex-col">
+                <mat-form-field class="w-1/4">
+                    <mat-label>Sale Price <small>(Per Unit)</small></mat-label>
+                    <input min="0" matInput placeholder="Sale Price" formControlName="salePrice" type="number">
+                </mat-form-field>
+                <mat-form-field class="w-1/4">
+                    <mat-label>Price including VAT <small>(Per Unit)</small></mat-label>
+                    <input matInput placeholder="Price including VAT" formControlName="includingVATAmount" type="number">
+                </mat-form-field>
+                <mat-form-field class="w-1/2">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput placeholder="Description" formControlName="description" rows="4"></textarea>
+                </mat-form-field>
+            </div>
+
+
+        </form>
+
+        <div class="flex justify-end space-x-5">
+            <button (click)="updateProduct()" *ngIf="pageType === 'edit'" mat-raised-button color="primary">Update</button>
+            <button (click)="createProduct()" *ngIf="pageType === 'new'" mat-raised-button color="accent">Create</button>
+            <button (click)="openConfirmationDialog()" *ngIf="pageType === 'edit'" mat-raised-button color="warn">Delete</button>
+        </div>
+
+    </div>
+
+
+
+</div>

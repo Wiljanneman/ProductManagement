@@ -22,6 +22,6 @@ public static class VATHelper
 
     public static decimal CalculateVAT(decimal amount)
     {
-        return amount * (_vatPercentage / 100);
+        return  amount * ( 1 + (_vatPercentage / 100));
     }
 }

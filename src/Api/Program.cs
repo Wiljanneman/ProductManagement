@@ -1,3 +1,4 @@
+using Api.Helpers;
 using Api.Services;
 using Application;
 using Application.Commons.Interfaces;
@@ -7,17 +8,30 @@ using Infrastructure;
 using Infrastructure.Persistence.EntityFramework;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Web;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using Serilog;
+
+var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+logger.Debug("init main");
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
 
     // Add logging
-    builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
-        .ReadFrom.Configuration(hostingContext.Configuration));
+    //builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
+    //    .ReadFrom.Configuration(hostingContext.Configuration));
+
+    builder.Host
+     .ConfigureLogging(logging =>
+     {
+         logging.ClearProviders();
+         logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+     })
+     .UseNLog();
 
 
     // Add services to the container.
@@ -28,10 +42,15 @@ try
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+    // Add logging services
+
     builder.Services.AddDbContext<ApplicationDbContext>();
     builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+    //other classes that need the logger 
+    builder.Services.AddTransient<GenericLoggerHelper>();
 
     builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 
@@ -81,8 +100,12 @@ try
 catch (Exception ex)
 {
     Log.Fatal(ex, "Unhandled exception.");
+    // NLog: catch setup errors
+    logger.Error(ex, "Stopped program because of exception");
 }
 finally
 {
+    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+    NLog.LogManager.Shutdown();
     Log.CloseAndFlush();
 }

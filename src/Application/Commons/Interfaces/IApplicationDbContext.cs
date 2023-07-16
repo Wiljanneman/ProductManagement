@@ -11,5 +11,6 @@ public interface IApplicationDbContext
 {
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<LogEntry> LogEntries {get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
