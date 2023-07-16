@@ -2,11 +2,11 @@
   "name": "angular-tailwind",
   "displayName": "Product Management Dashboard",
   "version": "0.1.1",
-  "description": "Angular & Tailwind CSS Admin Dashboard Starter Kit, Free and Open Source",
-  "homepage": "https://github.com/luciano-work/angular-tailwind#readme",
+  "description": "Product Management Dashboard Frontend",
+  "homepage": "https://github.com/Wiljanneman/ProductManagement#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/luciano-work/angular-tailwind.git"
+    "url": "git+https://github.com/Wiljanneman/ProductManagement.git"
   },
   "keywords": [
     "angular",
@@ -16,7 +16,7 @@
     "dark mode",
     "open source"
   ],
-  "author": "Luciano Oliveira <me@lanno.dev>",
+  "author": "William Niemand <me@lanno.dev>",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
