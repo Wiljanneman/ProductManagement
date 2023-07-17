@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Product } from '../../models/Product';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProductService } from './product.service';
+import { ProductService } from '../product.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -47,7 +47,7 @@ export class ProductComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result == 'yes') {
         // User clicked "Yes"
         this._productService.deleteProduct(product.id).subscribe({
           next: (res) => {

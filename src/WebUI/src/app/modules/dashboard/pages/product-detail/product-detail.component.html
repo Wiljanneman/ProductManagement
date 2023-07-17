@@ -44,9 +44,9 @@
         </form>
 
         <div class="flex justify-end space-x-5">
-            <button (click)="updateProduct()" *ngIf="pageType === 'edit'" mat-raised-button color="primary">Update</button>
-            <button (click)="createProduct()" *ngIf="pageType === 'new'" mat-raised-button color="accent">Create</button>
-            <button (click)="openConfirmationDialog()" *ngIf="pageType === 'edit'" mat-raised-button color="warn">Delete</button>
+            <button mtRoles roles="Admin" (click)="updateProduct()" *ngIf="pageType === 'edit'" mat-raised-button color="primary">Update</button>
+            <button mtRoles roles="Admin" (click)="createProduct()" *ngIf="pageType === 'new'" mat-raised-button color="accent">Create</button>
+            <button mtRoles roles="Admin" (click)="openConfirmationDialog()" *ngIf="pageType === 'edit'" mat-raised-button color="warn">Delete</button>
         </div>
 
     </div>

@@ -70,12 +70,12 @@
               <mat-icon>edit</mat-icon>
               <small>View / Edit</small>
             </div>
-            <div (click)="deleteProduct(product)" style="cursor: pointer;" class="flex flex-col items-center">
+            <div mtRoles roles="Admin" (click)="deleteProduct(product)" style="cursor: pointer;" class="flex flex-col items-center">
               <mat-icon>delete</mat-icon>
               <small>Delete</small>
             </div>
           </div>
-
+ 
         </td>
       </ng-container>
 

@@ -27,12 +27,13 @@ public class UserController : BaseController
         catch(Exception ex)
         {
             _logger.LogError(ex, "Error on users");
-            return StatusCode(ex.HResult, new { error = ex.Message });
+            return BadRequest(ex.Message);
         }
 
     }
 
-    [HttpPost("authenticate")]
+    [HttpPost]
+    [Route("login")]
     public async Task<ActionResult<TokenResponseVM>> AuthenticateUser([FromBody] UserVM credentials)
     {
         try
@@ -43,7 +44,8 @@ public class UserController : BaseController
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error on users");
-            return StatusCode(ex.HResult, new { error = ex.Message });
+            return BadRequest(ex.Message);
+
         }
     }
 }

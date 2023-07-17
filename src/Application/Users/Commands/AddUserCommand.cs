@@ -35,13 +35,9 @@ public class AddUserCommand: IRequest
 
             var result = await _userMgr.CreateAsync(user, password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                // User created successfully
-            }
-            else
-            {
-                // User creation failed, handle the error
+                throw new Exception("User could not be registered");
             }
 
             return Unit.Value;

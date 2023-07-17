@@ -9,12 +9,14 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BaseUrlInterceptor } from './interceptors/baseUrl.interceptor';
 import { HeaderInterceptor } from './interceptors/header.interceptor';
+import { ErrorHandlingService } from './shared/services/errorhandlingservice';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule,HttpClientModule],
   providers: [        
     AuthService,
+    ErrorHandlingService,
     { provide: MAT_DATE_LOCALE, useValue: 'en-ZA' },
     { provide: HTTP_INTERCEPTORS, useClass: BaseUrlInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true }],

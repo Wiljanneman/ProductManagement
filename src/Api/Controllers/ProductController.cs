@@ -31,7 +31,7 @@ public class ProductController : BaseController
         catch(Exception ex)
         {
             _logger.LogError(ex, "Error on products");
-            return StatusCode(ex.HResult, new { error = ex.Message });
+            return BadRequest(ex.Message);
         }
 
     }
@@ -45,14 +45,14 @@ public class ProductController : BaseController
             var result = await Mediator.Send(query);
             if (result == null)
             {
-                return NotFound();
+                return NotFound("No product found");
             }
             return Ok(result);
         }
         catch(Exception ex)
         {
             _logger.LogError(ex, "Error on products");
-            return StatusCode(ex.HResult, new { error = ex.Message });
+            return BadRequest(ex.Message);
         }
 
     }
@@ -67,7 +67,7 @@ public class ProductController : BaseController
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error on products");
-            return StatusCode(ex.HResult, new { error = ex.Message });
+            return BadRequest(ex.Message);
         }
     }
 
@@ -82,7 +82,7 @@ public class ProductController : BaseController
         catch(Exception ex)
         {
             _logger.LogError(ex, "Error on products");
-            return StatusCode(ex.HResult, new { error = ex.Message });
+            return BadRequest(ex.Message);
         }
 
     }
@@ -93,28 +93,37 @@ public class ProductController : BaseController
         try
         {
             var result = await Mediator.Send(new UpdateProductCommand { Product = product });
+            if (result == false)
+            {
+                return NotFound("No product found");
+            }
             return Ok(result);
         }
         catch(Exception ex)
         {
             _logger.LogError(ex, "Error on products");
-            return StatusCode(ex.HResult, new { error = ex.Message });
+            return BadRequest(ex.Message);
         }
 
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         try
         {
             var result = await Mediator.Send(new DeleteProductCommand { Id = id });
+            if (result == false)
+            {
+                return NotFound("No product found");
+            }
             return Ok(result);
         }
         catch(Exception ex)
         {
             _logger.LogError(ex, "Error on products");
-            return StatusCode(ex.HResult, new { error = ex.Message });
+            return BadRequest(ex.Message);
         }
 
     }

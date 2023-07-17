@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:35801/api',
-  tokenUrl: 'http://localhost:35801/api/auth',
-  resetUrl: 'http://localhost:35801/api/account'
+  apiUrl: 'https://productmanagementservice.azurewebsites.net/api',
+  tokenUrl: 'https://productmanagementservice.azurewebsites.net/api/auth',
+  resetUrl: 'https://productmanagementservice.azurewebsites.net/api/account'
 };

@@ -14,11 +14,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { ErrorHandlingService } from './services/errorhandlingservice';
+import { AuthDirective } from './directives/auth.directive';
 
 @NgModule({
-  declarations: [ResponsiveHelperComponent, ClickOutsideDirective, ConfirmationDialogComponent],
+  declarations: [ResponsiveHelperComponent, ClickOutsideDirective, ConfirmationDialogComponent, AuthDirective],
   imports: [CommonModule, MatSnackBarModule, MatTableModule, MatCheckboxModule, MatIconModule,  MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatPaginatorModule],
-  exports: [ResponsiveHelperComponent, ClickOutsideDirective, MatSnackBarModule, MatTableModule, MatCheckboxModule, MatIconModule,  MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatPaginatorModule],
+  exports: [ResponsiveHelperComponent, ClickOutsideDirective, MatSnackBarModule, MatTableModule, MatCheckboxModule, MatIconModule,  MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatPaginatorModule, AuthDirective],
   providers: [HttpClient]
 })
 export class SharedModule {}

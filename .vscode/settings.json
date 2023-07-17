@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/774acf6d-cca4-4b68-b1c4-561a17482422/resourceGroups/DefaultResourceGroup-JNB/providers/Microsoft.Web/sites/ProductManagementUI",
+    "appService.deploySubpath": "src\\WebUI\\dist\\angular-tailwind"
+}

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../product/product.service';
+import { ProductService } from '../product.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -137,7 +137,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result == 'yes') {
         // User clicked "Yes"
         this._productService.deleteProduct(this.product.id).subscribe({
           next: (res) => {

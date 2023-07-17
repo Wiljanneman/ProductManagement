@@ -11,11 +11,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Products.Commands;
-public class DeleteProductCommand : IRequest
+public class DeleteProductCommand : IRequest<bool>
 {
     public int Id { get; set; }
 
-    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
+    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, bool>
     {
         private IApplicationDbContext _context;
         private IMapper _mapper;
@@ -25,16 +25,16 @@ public class DeleteProductCommand : IRequest
             _context = context;
             _mapper = mapper;
         }
-        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             Product product = _context.Products.FirstOrDefault(a => a.Id == request.Id);
             if (product == null)
             {
-                return Unit.Value;
+                return false;
             }
             _context.Products.Remove(product);
             await _context.SaveChangesAsync(cancellationToken);
-            return Unit.Value;
+            return true;
         }
     }
 }

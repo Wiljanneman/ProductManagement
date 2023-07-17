@@ -8,13 +8,14 @@ using Application.Products.Common;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Products.Commands;
-public class UpdateProductCommand : IRequest
+public class UpdateProductCommand : IRequest<bool>
 {
     public ProductVM Product { get; set; }
 
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
     {
         private IApplicationDbContext _context;
         private IMapper _mapper;
@@ -24,12 +25,17 @@ public class UpdateProductCommand : IRequest
             _context = context;
             _mapper = mapper;
         }
-        public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            Product product = _mapper.Map<Domain.Entities.Product>(request.Product);
-            _context.Products.Update(product);
+            var product = _context.Products.AsNoTracking().FirstOrDefault(a => a.Id == request.Product.Id);
+            if (product == null)
+            {
+                return false;
+            }
+            Product productEntity = _mapper.Map<Domain.Entities.Product>(request.Product);
+            _context.Products.Update(productEntity);
             await _context.SaveChangesAsync(cancellationToken);
-            return Unit.Value;
+            return true;
         }
     }
 }
