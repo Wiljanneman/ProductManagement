@@ -1,68 +1,51 @@
-# Clean Architecture Solution
+# Product Management Dashboard
 
-This is a solution following the principles of Clean Architecture.
+This solution demonstrates how a small SPA, in this case a product management dashboard, can be built via Clean architecture using .NET 6 as backend Api and Angular 15 as Frontend presentation layer.
 
 ## Technologies
 
 * [ASP.NET Core 6](https://docs.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-6.0)
 * [Entity Framework Core 6](https://docs.microsoft.com/en-us/ef/core/)
-* [React](https://reactjs.org/)
+* [Angular](https://angular.io/)
 * [MediatR](https://github.com/jbogard/MediatR)
 * [AutoMapper](https://automapper.org/)
-* [FluentValidation](https://fluentvalidation.net/)
-* [Serilog](https://serilog.net/)
-* [xUnit](https://nunit.org/)
-* [FluentAssertions](https://fluentassertions.com/)
-* [Moq](https://github.com/moq)
+* [nLog](https://nlog-project.org/)
 
 ## Getting Started
 
 1. Install the latest [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
 2. Install the latest [Node.js LTS](https://nodejs.org/en/)
-3. Navigate to `src/WebUI/ClientApp` and run `npm install`
-4. Navigate to `src/WebUI/ClientApp` and run `npm start` to launch the front end (Angular)
-5. Navigate to `src/WebUI` and run `dotnet run` to launch the back end (ASP.NET Core Web API)
+3. Navigate to `src/WebUI` and run `npm install`
+4. Navigate to `src/WebUI` and run `npm serve` to launch the front end (Angular)
+5. Run Api project in 'src/WebUI' via prefered method.
+6. Check environment variables in src/WebUI to ensure the Angular client is point to the correct backend endpoint base url
 
 ### Database Configuration
 
-The solution is configured to use an in-memory database by default. This ensures that all users will be able to run the solution without needing to set up additional infrastructure (e.g. SQL Server).
-
-If you would like to use SQL Server, you will need to update **Web/appsettings.json** as follows:
-
-```json
-  "UseInMemoryDatabase": false,
-```
+The solution is configured to use an in-memory database (SQLite) by default. This ensures that all users will be able to run the solution without needing to set up additional infrastructure (e.g. SQL Server).
 
 Verify that the **DefaultConnection** connection string within **appsettings.json** points to a valid SQL Server instance. 
 
 When you run the application the database will be automatically created (if necessary) and the latest migrations will be applied.
 
-### Database Migrations
-
-To use `dotnet-ef` for your migrations please add the following flags to your command (values assume you are executing from repository root)
-
-* `--project src/Infrastructure` (optional if in this folder)
-* `--startup-project src/Web`
-* `--output-dir Persistence/Migrations`
-
-For example, to add a new migration from the root folder:
-
- `dotnet ef migrations add "SampleMigration" --project src\Infrastructure --startup-project src\Web --output-dir Persistence\EntityFramework\Migrations`
-
 ## Overview
+
+Clean Architecture is a software architectural pattern that promotes the separation of concerns and emphasizes the independence of business logic from external dependencies. It provides a structured approach to designing applications with clear boundaries between different layers.
+
+At its core, Clean Architecture consists of four main layers:
 
 ### Domain
 
-This will contain all entities, enums, exceptions, interfaces, types and logic specific to the domain layer.
+The Domain layer encapsulates the domain entities. 
 
 ### Application
 
-This layer contains all application logic. It is dependent on the domain layer, but has no dependencies on any other layer or project. This layer defines interfaces that are implemented by outside layers. For example, if the application need to access a notification service, a new interface would be added to application and an implementation would be created within infrastructure.
+The Application layer acts as the intermediary between the Domain and Infrastructure layers. It contains application-specific logic, such as use cases, business workflows, and application services.
+This layer contains all application logic, enums, exceptions, interfaces, types and logic specific to the application layer. 
 
 ### Infrastructure
 
-This layer contains classes for accessing external resources such as file systems, web services, smtp, and so on. These classes should be based on interfaces defined within the application layer.
+The API layer is responsible for exposing the application's functionality to external clients, such as web browsers, mobile apps, or other services. It handles the incoming requests, performs necessary validations, and invokes the appropriate use cases or application services from the Application layer. The API layer also handles the serialization and deserialization of data in a format that can be easily consumed by the clients, such as JSON or XML. This layer often utilizes frameworks or libraries specific to the chosen platform or technology stack, such as ASP.NET Core, Express.js, or Flask.
+### Web (Angular)
 
-### Web
-
-This layer is a single page application based on React and ASP.NET Core 6. This layer depends on both the Application and Infrastructure layers, however, the dependency on Infrastructure is only to support dependency injection. Therefore only *Program.cs* should reference Infrastructure.
+This layer is a single page application based on Angular 15.

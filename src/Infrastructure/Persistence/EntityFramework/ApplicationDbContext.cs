@@ -2,7 +2,6 @@
 using Application.Commons.Interfaces;
 using Domain.Commons;
 using Domain.Entities;
-using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
