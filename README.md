@@ -31,8 +31,6 @@ This solution demonstrates how a small SPA, in this case a product management da
 
 The solution is configured to use an in-memory database (SQLite) by default. This ensures that all users will be able to run the solution without needing to set up additional infrastructure (e.g. SQL Server).
 
-Verify that the **DefaultConnection** connection string within **appsettings.json** points to a valid SQL Server instance. 
-
 When you run the application the database will be automatically created (if necessary) and the latest migrations will be applied.
 
 ## Overview
