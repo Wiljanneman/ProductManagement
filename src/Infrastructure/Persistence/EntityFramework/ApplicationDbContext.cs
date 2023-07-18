@@ -2,10 +2,13 @@
 using Application.Commons.Interfaces;
 using Domain.Commons;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Persistence.EntityFramework;
 
@@ -53,6 +56,24 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     {
         UpdateSoftDelete();
         UpdateTimestamps();
+    }
+
+    public async Task CheckAndCreateUser(string email, string password, UserManager<ApplicationUser> _userManager)
+    {
+        using (var scope = this.GetInfrastructure().CreateScope())
+        {
+            var userManager = _userManager;
+            var existingUser = await userManager.FindByEmailAsync(email);
+            if (existingUser == null)
+            {
+                var newUser = new ApplicationUser { UserName = email, Email = email };
+                var result = await userManager.CreateAsync(newUser, password);
+                //if (!result.Succeeded)
+                //{
+                //    // Handle user creation failure
+                //}
+            }
+        }
     }
 
     private void UpdateSoftDelete()

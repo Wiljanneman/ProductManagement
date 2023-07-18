@@ -21,6 +21,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+
     // Add logging
     //builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
     //    .ReadFrom.Configuration(hostingContext.Configuration));
@@ -49,10 +50,22 @@ try
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+    using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+    {
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var email = "testusercreated@mail.com";
+        var password = "testpassword"; //
+        await dbContext.CheckAndCreateUser(email, password, userManager);
+    }
+
     //other classes that need the logger 
     builder.Services.AddTransient<GenericLoggerHelper>();
 
     builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
+
+
+
 
 
 
