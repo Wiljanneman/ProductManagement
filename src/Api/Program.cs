@@ -54,9 +54,21 @@ try
     {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var email = "testusercreated@mail.com";
-        var password = "testpassword"; //
-        await dbContext.CheckAndCreateUser(email, password, userManager);
+        dbContext.Database.Migrate();
+
+        // This is to seed the db with two base users
+        // Create testing admin user
+        var emailAdmin = "admin@mail.com";
+        var passwordAdmin = "Admin123?"; 
+        List<string> rolesAdmin = new List<string>() { "Admin", "User" };
+        await dbContext.CheckAndCreateUser(emailAdmin, passwordAdmin, userManager, rolesAdmin);
+
+        // Create testing normal user
+        var emailNormal = "testuser@gmail.com";
+        var passwordNormal = "Senwes123?";
+        List<string> rolesNormal = new List<string>() { "User" };
+
+        await dbContext.CheckAndCreateUser(emailNormal, passwordNormal, userManager, rolesNormal);
     }
 
     //other classes that need the logger 

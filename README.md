@@ -11,6 +11,11 @@ This solution demonstrates how a small SPA, in this case a product management da
 * [AutoMapper](https://automapper.org/)
 * [nLog](https://nlog-project.org/)
 
+## Demo
+
+[UI](https://productmanagementui.azurewebsites.net/)
+[Api](https://productmanagementservice.azurewebsites.net/api)
+
 ## Getting Started
 
 1. Install the latest [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
@@ -18,7 +23,9 @@ This solution demonstrates how a small SPA, in this case a product management da
 3. Navigate to `src/WebUI` and run `npm install`
 4. Navigate to `src/WebUI` and run `npm serve` to launch the front end (Angular)
 5. Run Api project in 'src/WebUI' via prefered method.
-6. Check environment variables in src/WebUI to ensure the Angular client is point to the correct backend endpoint base url
+6. Check environment variables in src/WebUI to ensure the Angular client points to the correct backend endpoint base url
+7. User Module yet to be created
+    7.1 Check program.cs for login credentials for an admin user and normal test user
 
 ### Database Configuration
 

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Security.Claims;
 using Application.Commons.Interfaces;
 using Domain.Commons;
 using Domain.Entities;
@@ -57,8 +58,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
         UpdateSoftDelete();
         UpdateTimestamps();
     }
-
-    public async Task CheckAndCreateUser(string email, string password, UserManager<ApplicationUser> _userManager)
+    /// <summary>
+    /// Testing purposes only
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <param name="_userManager"></param>
+    /// <returns></returns>
+    public async Task CheckAndCreateUser(string email, string password, UserManager<ApplicationUser> _userManager, List<string> roles = null)
     {
         using (var scope = this.GetInfrastructure().CreateScope())
         {
@@ -68,10 +75,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
             {
                 var newUser = new ApplicationUser { UserName = email, Email = email };
                 var result = await userManager.CreateAsync(newUser, password);
-                //if (!result.Succeeded)
-                //{
-                //    // Handle user creation failure
-                //}
+                if (result.Succeeded)
+                {
+                    var createdUser = await userManager.FindByIdAsync(newUser.Id);
+                    foreach (string role in roles)
+                    {
+                        await _userManager.AddClaimAsync(createdUser, new Claim(ClaimTypes.Role, role));
+                    }
+                }
             }
         }
     }
