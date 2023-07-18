@@ -6,6 +6,7 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { Product } from '../../models/Product';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -21,6 +22,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
   constructor(
     private formBuilder: FormBuilder,
     private _route: ActivatedRoute,
+    private _progressBarService: ProgressBarService,
     private _productService: ProductService,
     private _snackbarService: SnackbarService,
     private _router: Router,
@@ -88,13 +90,16 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
     });
   }
   getProductById(id: number) {
+    this._progressBarService.start();
     this._productService.getProductById(id).subscribe({
       next: (res) => {
         this.product = res;
         this.productForm.patchValue(res);
+        this._progressBarService.complete();
       },
       error: (err) => {
         this._snackbarService.show(err.message);
+        this._progressBarService.complete();
       }
     });
   }
@@ -103,13 +108,16 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
       this._snackbarService.show('Ensure all required fields are completed');
       return;
     }
+    this._progressBarService.start();
     this._productService.addProduct(this.productForm.getRawValue()).subscribe({
       next: (res) => {
         this._router.navigate(['/dashboard/products'])
         this._snackbarService.show('Product has been updated');
+        this._progressBarService.complete();
       },
       error: (err) => {
         this._snackbarService.show(err.message);
+        this._progressBarService.complete();
       }
     })
   }
@@ -118,13 +126,16 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
       this._snackbarService.show('Ensure all required fields are completed');
       return;
     }
+    this._progressBarService.start();
     this._productService.updateProduct(this.productForm.getRawValue()).subscribe({
       next: (res) => {
         this._router.navigate(['/dashboard/products'])
         this._snackbarService.show('Product has been added');
+        this._progressBarService.complete();
       },
       error: (err) => {
         this._snackbarService.show(err.message);
+        this._progressBarService.complete();
       }
     })
   }
@@ -137,15 +148,18 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result == 'yes') {
+      if (result == 'yes' || result == 'true') {
         // User clicked "Yes"
+        this._progressBarService.start();
         this._productService.deleteProduct(this.product.id).subscribe({
           next: (res) => {
             this._router.navigate(['/dashboard/products'])
             this._snackbarService.show('Product has been deleted');
+            this._progressBarService.complete();
           },
           error: (err) => {
             this._snackbarService.show(err.message);
+            this._progressBarService.complete();
           }
         })
       }

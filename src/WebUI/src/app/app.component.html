@@ -1,4 +1,5 @@
 <div [ngClass]="{ dark: this.themeService.isDark }">
+  <app-progress-bar [isLoading]="isLoading$ | async"></app-progress-bar>
   <router-outlet></router-outlet>
   <app-responsive-helper></app-responsive-helper>
 </div>

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-product',
@@ -16,7 +17,7 @@ export class ProductComponent implements OnInit {
   displayedColumns = ['id','name','description','incVatAmount','excVatAmount','qty','isSale', 'actions'];
   dataSource = new MatTableDataSource<Product>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private _productService: ProductService, private _snackbarService: SnackbarService, private _router: Router, private _matDialog: MatDialog) {
+  constructor(private _progressBarService: ProgressBarService ,private _productService: ProductService, private _snackbarService: SnackbarService, private _router: Router, private _matDialog: MatDialog) {
 
   }
 
@@ -24,13 +25,16 @@ export class ProductComponent implements OnInit {
     this.getProducts();
   }
   getProducts() {
+    this._progressBarService.start();
     this._productService.getProducts().subscribe({
       next: (res) => {
         this.dataSource.data = res;
         this.dataSource.paginator = this.paginator;
+        this._progressBarService.complete();
       },
       error: (err) => {
         this._snackbarService.show(err.message);
+        this._progressBarService.complete();
       }
     });
   }
@@ -47,15 +51,18 @@ export class ProductComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result == 'yes') {
+      if (result == 'yes' || result == 'true') {
         // User clicked "Yes"
+        this._progressBarService.start();
         this._productService.deleteProduct(product.id).subscribe({
           next: (res) => {
             this.getProducts();
             this._snackbarService.show('Product has been deleted');
+            this._progressBarService.complete();
           },
           error: (err) => {
             this._snackbarService.show(err.message);
+            this._progressBarService.complete();
           }
       })
       } else {

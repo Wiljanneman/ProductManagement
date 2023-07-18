@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -18,6 +19,7 @@ export class SignInComponent implements OnInit {
     private readonly _formBuilder: FormBuilder,
     private readonly _router: Router,
     private _authService: AuthService,
+    private _progressBarService: ProgressBarService,
     private snackbarService: SnackbarService) {}
 
   ngOnInit(): void {
@@ -39,6 +41,7 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit() {
+    
     this.submitted = true;
     const { email, password } = this.form.value;
 
@@ -46,12 +49,16 @@ export class SignInComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    this._progressBarService.start();
     this._authService.login(email, password).subscribe(res => {
+      this._progressBarService.complete();
       if (res.status === 200) {
         this._router.navigate(['/']);
       } else {
         this.snackbarService.show('Login failed - ' + res?.message)
       }
+    }, () => {
+      this._progressBarService.complete();
     })
 
   }

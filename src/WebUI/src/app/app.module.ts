@@ -10,12 +10,15 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BaseUrlInterceptor } from './interceptors/baseUrl.interceptor';
 import { HeaderInterceptor } from './interceptors/header.interceptor';
 import { ErrorHandlingService } from './shared/services/errorhandlingservice';
+import { ProgressBarService } from './shared/services/progress-bar.service';
+import { ProgressBarComponent } from './shared/components/progress-bar/progress-bar.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ProgressBarComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule,HttpClientModule],
   providers: [        
     AuthService,
+    ProgressBarService,
     ErrorHandlingService,
     { provide: MAT_DATE_LOCALE, useValue: 'en-ZA' },
     { provide: HTTP_INTERCEPTORS, useClass: BaseUrlInterceptor, multi: true },

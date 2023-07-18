@@ -16,11 +16,13 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { ErrorHandlingService } from './services/errorhandlingservice';
 import { AuthDirective } from './directives/auth.directive';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [ResponsiveHelperComponent, ClickOutsideDirective, ConfirmationDialogComponent, AuthDirective],
-  imports: [CommonModule, MatSnackBarModule, MatTableModule, MatCheckboxModule, MatIconModule,  MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatPaginatorModule],
-  exports: [ResponsiveHelperComponent, ClickOutsideDirective, MatSnackBarModule, MatTableModule, MatCheckboxModule, MatIconModule,  MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatPaginatorModule, AuthDirective],
+  imports: [CommonModule, MatSnackBarModule, MatTableModule, MatCheckboxModule, MatIconModule,  MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule],
+  exports: [ResponsiveHelperComponent, ClickOutsideDirective, MatSnackBarModule, MatTableModule, MatCheckboxModule, MatIconModule,  MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatPaginatorModule, AuthDirective, MatProgressBarModule],
   providers: [HttpClient]
 })
 export class SharedModule {}
