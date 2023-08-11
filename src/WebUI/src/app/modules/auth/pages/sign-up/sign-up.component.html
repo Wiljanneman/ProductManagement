@@ -1,4 +1,4 @@
-<mat-horizontal-stepper  #stepper class="w-full">
+<mat-horizontal-stepper #stepper class="w-full">
   <!-- Step 1: Products Table -->
   <mat-step label="Select Products">
     <app-products-table-component (selected)="onProductSelected($event)"></app-products-table-component>
@@ -7,5 +7,10 @@
   <!-- Step 2: Registration Details -->
   <mat-step label="Registration Details">
     <app-registration-details-component></app-registration-details-component>
+  </mat-step>
+
+  <!-- Step 3: Checkout -->
+  <mat-step label="Registration Details">
+    
   </mat-step>
 </mat-horizontal-stepper>
