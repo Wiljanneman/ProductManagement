@@ -13,6 +13,15 @@ import { TwoStepsComponent } from './pages/two-steps/two-steps.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
+import { ProductsTableComponentComponent } from './pages/sign-up/products-table-component/products-table-component.component';
+import { RegistrationDetailsComponentComponent } from './pages/sign-up/registration-details-component/registration-details-component.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @NgModule({
   declarations: [
@@ -22,10 +31,13 @@ import { AuthGuard } from 'src/app/core/guards/auth.guard';
     ForgotPasswordComponent,
     NewPasswordComponent,
     TwoStepsComponent,
+    ProductsTableComponentComponent,
+    RegistrationDetailsComponentComponent,
   ],
   providers: [
     AuthService,
-    AuthGuard
+    AuthGuard,
+    SnackbarService
   ],
   imports: [
     CommonModule,
@@ -34,6 +46,12 @@ import { AuthGuard } from 'src/app/core/guards/auth.guard';
     AngularSvgIconModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+    MatStepperModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatCheckboxModule
   ],
 })
 export class AuthModule {}
