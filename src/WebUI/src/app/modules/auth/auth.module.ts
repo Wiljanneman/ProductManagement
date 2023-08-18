@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { PaymentDetailsComponent } from './pages/sign-up/payment-details/payment-details.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
     TwoStepsComponent,
     ProductsTableComponentComponent,
     RegistrationDetailsComponentComponent,
+    PaymentDetailsComponent,
   ],
   providers: [
     AuthService,

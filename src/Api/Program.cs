@@ -8,10 +8,12 @@ using Infrastructure;
 using Infrastructure.Persistence.EntityFramework;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using NLog;
 using NLog.Web;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using PayFast;
 using Serilog;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
@@ -19,6 +21,7 @@ logger.Debug("init main");
 
 try
 {
+
     var builder = WebApplication.CreateBuilder(args);
 
 
@@ -54,6 +57,7 @@ try
     {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         dbContext.Database.Migrate();
 
         // This is to seed the db with two base users
@@ -62,7 +66,7 @@ try
         var passwordAdmin = "Admin123?"; 
         List<string> rolesAdmin = new List<string>() { "Admin", "User" };
         await dbContext.CheckAndCreateUser(emailAdmin, passwordAdmin, userManager, rolesAdmin);
-
+        builder.Services.Configure<PayFastSettings>(configuration.GetSection("PayFastSettings"));
         // Create testing normal user
         var emailNormal = "testuser@gmail.com";
         var passwordNormal = "Senwes123?";

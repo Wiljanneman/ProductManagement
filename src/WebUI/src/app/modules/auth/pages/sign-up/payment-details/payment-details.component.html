@@ -1,0 +1,22 @@
+<div class="invoice p-6 border rounded shadow-md">
+    <div class="text-center mb-6">
+      <h1 class="text-xl font-semibold">Invoice</h1>
+      <p>Date: {{ product.date | date:'longDate' }}</p>
+    </div>
+    <div class="mb-4">
+      <h2 class="text-lg font-semibold">Product Details</h2>
+      <p><strong>Name:</strong> {{ product.name }}</p>
+      <p><strong>Price:</strong> ${{ product.price }}</p>
+      <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+    </div>
+    <div class="mb-4">
+      <h2 class="text-lg font-semibold">Total</h2>
+      <p><strong>Subtotal:</strong> ${{ product.price * product.quantity }}</p>
+      <p><strong>VAT (20%):</strong> ${{ (product.price * product.quantity * 0.2) | number: '1.2-2' }}</p>
+      <p><strong>Total Amount (including VAT):</strong> ${{ (product.price * product.quantity * 1.2) | number: '1.2-2' }}</p>
+    </div>
+    <div class="text-center mb-6">
+        <button mat-flat-button color="accent">Complete Payment</button>
+      </div>
+  </div>
+  

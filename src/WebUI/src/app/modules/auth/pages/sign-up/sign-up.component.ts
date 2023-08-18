@@ -13,6 +13,7 @@ export class SignUpComponent implements OnInit {
   @ViewChild('stepper')
   private stepper!: MatStepper;
   accountType!: number;
+
   constructor(private formBuilder: FormBuilder, private _snackbarService: SnackbarService) {
 
   }

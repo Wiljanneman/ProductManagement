@@ -11,6 +11,8 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.5" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="PayFast" Version="1.0.5" />
+    <PackageReference Include="PayFast.AspNetCore" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>
